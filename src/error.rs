@@ -68,7 +68,19 @@ impl fmt::Debug for Void {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(self.description())
+        match *self {
+            Method(ref e)
+            | Uri(ref e)
+            | Version(ref e)
+            | Header(ref e)
+            | Status(ref e)
+            | Io(ref e)
+            | Ssl(ref e)
+            | TooLarge(ref e)
+            | Http2(ref e)
+            | Utf8(ref e) => fmt::Display::fmt(e, f),
+            e => f.write_str(e.description())
+        }
     }
 }
 
